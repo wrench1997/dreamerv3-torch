@@ -2,6 +2,8 @@
 import numpy as np
 import gymnasium as gym
 import os
+import matplotlib.pyplot as plt
+
 
 class Maze:
     def __init__(self, task, obs_key="image", act_key="action", size=(64, 64), seed=0):
@@ -45,14 +47,19 @@ class Maze:
         return space
 
     def step(self, action):
-        obs, reward,terminated, truncated ,info = self._env.step(action)
+        _ , reward,terminated, truncated ,info = self._env.step(action)
+        obs = self.render()
+        # plt.imshow(obs)
+        # plt.axis('off')  # 可选：隐藏坐标轴
+        # plt.show()
         if not self._obs_is_dict:
             obs = {self._obs_key: obs}
         obs["is_first"] = False
         obs["is_last"] = terminated
         obs["is_terminal"] = info.get("is_terminal", False)
         return obs, reward, terminated, info
-
+    def render(self):
+        return self._env.render()
     def reset(self,seed=None,options={}):
         obs = self._env.reset(seed=seed,options=options)
         obs = obs[:-1]
