@@ -94,6 +94,10 @@ class Logger:
             name = name if isinstance(name, str) else name.decode("utf-8")
             if np.issubdtype(value.dtype, np.floating):
                 value = np.clip(255 * value, 0, 255).astype(np.uint8)
+            #  B, T, H, W, C = value.shape
+            print('value.shape', value.shape)
+            # if len(value.shape) == 1:
+            #    value = np.stack(value, axis=0) 
             B, T, H, W, C = value.shape
             value = value.transpose(1, 4, 2, 0, 3).reshape((1, T, C, H, B * W))
             self._writer.add_video(name, value, step, 16)
@@ -154,6 +158,8 @@ def simulate(
             results = [envs[i].reset() for i in indices]
             results = [r() for r in results]
             for index, result in zip(indices, results):
+                if len(result['image'])==1:
+                    result['image']=result['image'][0]
                 t = result.copy()
                 t = {k: convert(v) for k, v in t.items()}
                 # action will be added to transition in add_to_cache
@@ -164,6 +170,7 @@ def simulate(
                 # replace obs with done by initial state
                 obs[index] = result
         # step agents
+        # if obs[0]["image"].shape == 
         obs = {k: np.stack([o[k] for o in obs]) for k in obs[0] if "log_" not in k}
         action, agent_state = agent(obs, done, agent_state)
         if isinstance(action, dict):

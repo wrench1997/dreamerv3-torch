@@ -193,6 +193,8 @@ class RSSM(nn.Module):
                 )
 
         prior = self.img_step(prev_state, prev_action)
+        if len(embed.shape) == 3:
+            embed = embed.squeeze(1)
         x = torch.cat([prior["deter"], embed], -1)
         # (batch_size, prior_deter + embed) -> (batch_size, hidden)
         x = self._obs_out_layers(x)
@@ -327,6 +329,7 @@ class MultiEncoder(nn.Module):
         if self.cnn_shapes:
             input_ch = sum([v[-1] for v in self.cnn_shapes.values()])
             input_shape = tuple(self.cnn_shapes.values())[0][:2] + (input_ch,)
+            # input_shape = (64,64,3)
             self._cnn = ConvEncoder(
                 input_shape, cnn_depth, act, norm, kernel_size, minres
             )
@@ -457,7 +460,9 @@ class ConvEncoder(nn.Module):
     ):
         super(ConvEncoder, self).__init__()
         act = getattr(torch.nn, act)
+        #我是maze 改下
         h, w, input_ch = input_shape
+        #w, h, input_ch = input_shape
         stages = int(np.log2(h) - np.log2(minres))
         in_dim = input_ch
         out_dim = depth
@@ -478,9 +483,9 @@ class ConvEncoder(nn.Module):
             in_dim = out_dim
             out_dim *= 2
             h, w = h // 2, w // 2
-
         self.outdim = out_dim // 2 * h * w
         self.layers = nn.Sequential(*layers)
+        print(self.layers)
         self.layers.apply(tools.weight_init)
 
     def forward(self, obs):

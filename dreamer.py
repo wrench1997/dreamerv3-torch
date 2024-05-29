@@ -144,6 +144,7 @@ def make_dataset(episodes, config):
 
 
 def make_env(config, mode, id):
+    
     suite, task = config.task.split("_", 1)
     if suite == "dmc":
         import envs.dmc as dmc
@@ -180,9 +181,12 @@ def make_env(config, mode, id):
         env = wrappers.OneHotAction(env)
     elif suite == "memorymaze":
         from envs.memorymaze import MemoryMaze
-
         env = MemoryMaze(task, seed=config.seed + id)
         env = wrappers.OneHotAction(env)
+    elif suite == "maze":
+        from envs.maze import Maze
+        env = Maze(task, seed=config.seed + id)
+        env = wrappers.OneHotAction(env)        
     elif suite == "crafter":
         import envs.crafter as crafter
 
@@ -190,7 +194,6 @@ def make_env(config, mode, id):
         env = wrappers.OneHotAction(env)
     elif suite == "minecraft":
         import envs.minecraft as minecraft
-
         env = minecraft.make_env(task, size=config.size, break_speed=config.break_speed)
         env = wrappers.OneHotAction(env)
     else:
