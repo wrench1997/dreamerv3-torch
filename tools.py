@@ -93,6 +93,7 @@ class Logger:
         for name, value in self._videos.items():
             name = name if isinstance(name, str) else name.decode("utf-8")
             if np.issubdtype(value.dtype, np.floating):
+                #乘以255恢复原图
                 value = np.clip(255 * value, 0, 255).astype(np.uint8)
             #  B, T, H, W, C = value.shape
             print('value.shape', value.shape)
@@ -221,7 +222,6 @@ def simulate(
                         )
                         # log items won't be used later
                         cache[envs[i].id].pop(key)
-
                 if not is_eval:
                     step_in_dataset = erase_over_episodes(cache, limit)
                     logger.scalar(f"dataset_size", step_in_dataset)
