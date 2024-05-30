@@ -47,8 +47,8 @@ class Maze:
         return space
 
     def step(self, action):
-        _ , reward,terminated, truncated ,info = self._env.step(action)
-        obs = self.render()
+        obs , reward,terminated, truncated ,info = self._env.step(action)
+        # obs= self.render()
         # plt.imshow(obs)
         # plt.axis('off')  # 可选：隐藏坐标轴
         # plt.show()
@@ -62,7 +62,7 @@ class Maze:
         return self._env.render()
     def reset(self,seed=None,options={}):
         obs = self._env.reset(seed=seed,options=options)
-        obs = obs[:-1]
+        obs = self.render()
         if not self._obs_is_dict:
             obs = {self._obs_key: obs}
         obs["is_first"] = True
