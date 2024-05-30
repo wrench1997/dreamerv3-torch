@@ -100,7 +100,7 @@ class Logger:
             #    value = np.stack(value, axis=0) 
             B, T, H, W, C = value.shape
             value = value.transpose(1, 4, 2, 0, 3).reshape((1, T, C, H, B * W))
-            self._writer.add_video(name, value, step, 16)
+            self._writer.add_video(name, value, step,16) # 
 
         self._writer.flush()
         self._scalars = {}

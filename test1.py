@@ -59,3 +59,6 @@ print(new_value.shape)
 ab = np.zeros((64,64,3))
 ab = np.array(ab)
 print(ab)
+_gray = False
+img_shape = (64,64) + ((1,) if _gray else (3,))
+print(img_shape)

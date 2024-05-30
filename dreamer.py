@@ -148,7 +148,6 @@ def make_env(config, mode, id):
     suite, task = config.task.split("_", 1)
     if suite == "dmc":
         import envs.dmc as dmc
-
         env = dmc.DeepMindControl(
             task, config.action_repeat, config.size, seed=config.seed + id
         )

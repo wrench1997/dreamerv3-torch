@@ -148,7 +148,7 @@ atari100k:
 maze:
   steps: 1e8
   envs: 1
-  action_repeat: 1
+  action_repeat: 2
   train_ratio: 16
   # video_pred_log: true
   encoder: { mlp_keys: '.*', cnn_keys: 'image', cnn_depth: 32, mlp_layers: 5, mlp_units: 1024}
