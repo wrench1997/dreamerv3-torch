@@ -13,7 +13,7 @@ defaults:
   eval_episode_num: 10
   log_every: 1e4
   reset_every: 0
-  device: 'cuda:0'
+  device: 'cuda:1'
   compile: True
   precision: 32
   debug: False
@@ -147,15 +147,16 @@ atari100k:
 
 maze:
   steps: 1e8
-  envs: 1
+  envs: 2
   action_repeat: 2
-  train_ratio: 16
+  train_ratio: 512
   # video_pred_log: true
   encoder: { mlp_keys: '.*', cnn_keys: 'image', cnn_depth: 32, mlp_layers: 5, mlp_units: 1024}
   decoder: { mlp_keys: '.*', cnn_keys: 'image', cnn_depth: 32, mlp_layers: 5, mlp_units: 1024}
   actor: {layers: 5, dist: 'onehot', std: 'none'}
   imag_gradient: 'reinforce'
   task: 'memorymaze_9x9'
+  time_limit: 1000
 
 
 minecraft:
@@ -179,6 +180,7 @@ minecraft:
   reward_head: {layers: 5}
   cont_head: {layers: 5}
   imag_gradient: 'reinforce'
+
   break_speed: 100.0
   time_limit: 36000
 

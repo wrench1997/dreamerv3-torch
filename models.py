@@ -208,7 +208,7 @@ class WorldModel(nn.Module):
         truth = data["image"][:6]
         model = model
         error = (model - truth + 1.0) / 2.0
-
+        #第一个真实数据 ，第二个模型预测数据，第三个是预测误差
         return torch.cat([truth, model, error], 2)
 
 
